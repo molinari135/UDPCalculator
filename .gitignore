@@ -1,0 +1,7 @@
+/.metadata/
+UDPClient/.settings/language.settings.xml
+UDPClient/.project
+UDPClient/.cproject
+UDPServer/.cproject
+UDPServer/.project
+*.xml
