@@ -4,4 +4,6 @@ UDPClient/.project
 UDPClient/.cproject
 UDPServer/.cproject
 UDPServer/.project
+UDPServer/Debug
 *.xml
+*.prefs
