@@ -17,7 +17,7 @@
 #include <unistd.h>
 #endif
 
-#define ECHOSIZE 512
+#define ECHOMAX 255
 
 // default address and port
 #define DEFAULT_IP "127.0.0.1"
