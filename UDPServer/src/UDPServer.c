@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : UDPServer.c
- Author      : Ester Molinari
+ Author      : Tommaso Perniola
  Version     : 1.3
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (server)

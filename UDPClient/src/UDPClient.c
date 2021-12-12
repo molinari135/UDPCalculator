@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPClient.c
  Author      : Ester Molinari
- Version     : 1.5
+ Version     : 1.6
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (client)
  ============================================================================
@@ -13,25 +13,16 @@
 #include "utils.h"
 
 void checkingServerInfo(char name[], int port) {
-	// finding loopback canonical name
-	struct hostent* loopback;
-	struct in_addr loopbackAddr;
-	char* loopback_name;
-
-	loopbackAddr.s_addr = inet_addr(DEFAULT_IP);
-
-	loopback = gethostbyaddr((char*)&loopbackAddr, 4, AF_INET);
-	loopback_name = loopback->h_name;
-
-	if (strcmp(name, loopback_name) != 0) {
-		strcpy(name, loopback_name);
+	// checking loopback canonical name
+	if (strcmp(name, DEFAULT_NAME) != 0) {
+		strcpy(name, DEFAULT_NAME);
 	}
 	if (port != DEFAULT_PORT) {
 		port = DEFAULT_PORT;
 	}
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	// output stream
 	setvbuf(stdout, NULL, _IONBF, 0);
 
@@ -57,9 +48,10 @@ int main(void) {
 	struct in_addr* serverAddr;
 	char echoString[ECHOMAX];
 	char echoBuffer[ECHOMAX];
-	char server_name[40];
+	char server_name[ECHOMAX];
 	char server_ip[16];
 	char sign[0];
+	char* token;
 
 	// client's socket
 	if ((client_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -68,10 +60,19 @@ int main(void) {
 	}
 
 	// server's address and port from input
-	// FIXME doesn't recognise name:port format
-	printf("Insert server's name and port like this: localhost 48000\n");
-	scanf(" %[^\n]", echoBuffer);
-	sscanf(echoBuffer, "%s %d", server_name, &server_port);
+	if (argc > 2) {
+		strcpy(server_name, argv[1]);
+		server_port = atoi(argv[2]);
+		checkingServerInfo(argv[1], atoi(argv[2]));
+	} else {
+		printf("Insert server's name and port (localhost:45000)\n");
+		scanf(" %[^\n]", echoBuffer);
+	}
+
+	token = strtok(echoBuffer, ":");
+	strcpy(server_name, token);
+	token = strtok(NULL, ":");
+	server_port = atoi(token);
 
 	// checking input with default values
 	checkingServerInfo(server_name, server_port);
@@ -125,7 +126,6 @@ int main(void) {
 
 			printf("Result received from server %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
 		} else {
-			// FIXME it recognize late esc value
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
 				errorhandler("echo word too long");
 			}
