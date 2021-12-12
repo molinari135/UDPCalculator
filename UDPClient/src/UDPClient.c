@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPClient.c
  Author      : Ester Molinari
- Version     : 1.0
+ Version     : 1.1
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (client)
  ============================================================================
@@ -26,15 +26,19 @@ int main(void) {
 	}
 #endif
 
-	// TODO input address and port
 	int client_socket;
-	struct sockaddr_in echoServerAddr;
-	struct sockaddr_in fromAddr;
-	int fromSize;
-	char echoString[ECHOMAX];
-	char echoBuffer[ECHOMAX];
 	int echoStringLen;
 	int respStringLen;
+	int fromSize;
+	int server_port = 0;
+	struct sockaddr_in echoServerAddr;
+	struct sockaddr_in fromAddr;
+	struct hostent* server;
+	struct in_addr* serverAddr;
+	char echoString[ECHOMAX];
+	char echoBuffer[ECHOMAX];
+	char server_name[40];
+	char server_ip[16];
 
 	// client's socket
 	if ((client_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -43,6 +47,24 @@ int main(void) {
 	}
 
 	// TODO server's address resolution
+	// server's address and port from input
+	// FIXME doesn't recognise name:port format
+	printf("Insert server's name and port like this: localhost 48000\n");
+	scanf(" %[^\n]", echoBuffer);
+	sscanf(echoBuffer, "%s %d", server_name, &server_port);
+
+	// server's address resolution
+	server = gethostbyname(server_name);
+
+	if (server == NULL) {
+		errorhandler("gethostbyname() failed\n");
+		return EXIT_FAILURE;
+	} else {
+		serverAddr = (struct in_addr*)server->h_addr_list[0];
+		strcpy(server_ip, inet_ntoa(*serverAddr));
+	}
+
+	printf("Name: %s, Address: %s\n", server_name, server_ip);
 
 	// setting server's address and port
 	memset(&echoServerAddr, 0, sizeof(echoServerAddr));
