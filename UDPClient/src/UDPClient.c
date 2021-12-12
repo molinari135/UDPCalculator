@@ -101,13 +101,17 @@ int main(void) {
 
 			// receiving result from server
 			fromSize = sizeof(fromAddr);
+			memset(echoBuffer, 0, sizeof(echoBuffer));
 			respStringLen = recvfrom(client_socket, echoBuffer, ECHOMAX, 0, (struct sockaddr*)&fromAddr, &fromSize);
 
 			if (echoServerAddr.sin_addr.s_addr != fromAddr.sin_addr.s_addr) {
 				fprintf(stderr, "Error: received a packet from unknown source.\n");
 				return EXIT_FAILURE;
 			}
+
+			printf("Result: %s\n", echoBuffer);
 		} else {
+			// FIXME it recognize late esc value
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
 				errorhandler("echo word too long");
 			}

@@ -18,6 +18,7 @@
 #endif
 
 #define ECHOMAX 255
+#define EQUALS '='
 
 // default address and port
 #define DEFAULT_NAME "localhost"
