@@ -90,7 +90,7 @@ int main(void) {
 		scanf(" %[^\n]", echoString);
 		echoStringLen = strlen(echoString);
 
-		if (echoBuffer[0] != '=') {
+		if (echoString[0] != '=') {
 			if (echoStringLen > ECHOMAX) {
 				errorhandler("echo word too long");
 			}

@@ -110,11 +110,7 @@ int main(void) {
 					errorhandler("sendto() sent different number of bytes than expected");
 				}
 			} else {
-				// sending exit message
-				exitMsgLen = strlen(exitMsg);
-				if (sendto(server_socket, exitMsg, exitMsgLen, 0, (struct sockaddr*)&echoClientAddr, &clientAddrLen) != exitMsgLen) {
-					errorhandler("sendto() sent different number of bytes than expected");
-				}
+				echoBuffer[0] = EQUALS;
 			}
 		} while (echoBuffer[0] != EQUALS);
 	}
