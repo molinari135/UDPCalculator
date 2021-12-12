@@ -46,7 +46,6 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	// TODO server's address resolution
 	// server's address and port from input
 	// FIXME doesn't recognise name:port format
 	printf("Insert server's name and port like this: localhost 48000\n");
