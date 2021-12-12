@@ -20,6 +20,7 @@
 #define ECHOMAX 512
 
 // default address and port
+#define DEFAULT_NAME "localhost"
 #define DEFAULT_IP "127.0.0.1"
 #define DEFAULT_PORT 45000
 
