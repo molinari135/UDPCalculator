@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPServer.c
  Author      : Ester Molinari
- Version     : 1.1
+ Version     : 1.2
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (server)
  ============================================================================
@@ -14,7 +14,7 @@
 
 float calculator(char query[]) {
 	char sign[0];
-	int a = 0, b = 0, res = 0;
+	int res = 0, a = 0, b = 0;
 
 	sscanf(query, "%s %d %d", sign, &a, &b);
 
@@ -64,6 +64,7 @@ int main(void) {
 	int exitMsgLen = 0;
 	int bufferLen = 0;
 	int result = 0;
+	int a = 0, b = 0;
 
 	// server's socket
 	if ((server_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {

@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPClient.c
  Author      : Ester Molinari
- Version     : 1.3
+ Version     : 1.4
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (client)
  ============================================================================
@@ -40,6 +40,7 @@ int main(void) {
 	int respStringLen;
 	int fromSize;
 	int server_port = 0;
+	int a = 0, b = 0;
 	struct sockaddr_in echoServerAddr;
 	struct sockaddr_in fromAddr;
 	struct hostent* server;
@@ -48,6 +49,7 @@ int main(void) {
 	char echoBuffer[ECHOMAX];
 	char server_name[40];
 	char server_ip[16];
+	char sign[0];
 
 	// client's socket
 	if ((client_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -93,6 +95,8 @@ int main(void) {
 		if (echoString[0] != '=') {
 			if (echoStringLen > ECHOMAX) {
 				errorhandler("echo word too long");
+			} else {
+				sscanf(echoString, "%s %d %d", sign, &a, &b);
 			}
 
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
@@ -109,7 +113,7 @@ int main(void) {
 				return EXIT_FAILURE;
 			}
 
-			printf("Result: %s\n", echoBuffer);
+			printf("Result received from %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
 		} else {
 			// FIXME it recognize late esc value
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
