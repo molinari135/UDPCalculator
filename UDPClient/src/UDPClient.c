@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPClient.c
  Author      : Ester Molinari
- Version     : 1.4
+ Version     : 1.5
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (client)
  ============================================================================
@@ -13,8 +13,18 @@
 #include "utils.h"
 
 void checkingServerInfo(char name[], int port) {
-	if (strcmp(name, DEFAULT_NAME) != 0) {
-		strcpy(name, DEFAULT_NAME);
+	// finding loopback canonical name
+	struct hostent* loopback;
+	struct in_addr loopbackAddr;
+	char* loopback_name;
+
+	loopbackAddr.s_addr = inet_addr(DEFAULT_IP);
+
+	loopback = gethostbyaddr((char*)&loopbackAddr, 4, AF_INET);
+	loopback_name = loopback->h_name;
+
+	if (strcmp(name, loopback_name) != 0) {
+		strcpy(name, loopback_name);
 	}
 	if (port != DEFAULT_PORT) {
 		port = DEFAULT_PORT;
