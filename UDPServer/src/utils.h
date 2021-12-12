@@ -54,7 +54,7 @@ int sub(int a, int b)
 	return (a - b);
 }
 
-float division(int a, int b) {
+float division(float a, float b) {
 	return (a / b);
 }
 
