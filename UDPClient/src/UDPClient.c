@@ -124,7 +124,6 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 			}
 
-			// FIXME wrong server name output??
 			printf("Result received from server %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
 		} else {
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
