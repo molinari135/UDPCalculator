@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPClient.c
  Author      : Ester Molinari
- Version     : 1.1
+ Version     : 1.3
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (client)
  ============================================================================
@@ -84,32 +84,39 @@ int main(void) {
 	echoServerAddr.sin_addr.s_addr = inet_addr(DEFAULT_IP);
 
 	// sending a message to server
-	memset(echoString, 0, sizeof(echoString));
-	printf("Insert echo string:\n");
-	scanf("%s", echoString);
+	while(1) {
+		memset(echoString, 0, sizeof(echoString));
+		printf("Insert a math query (+ 23 45):\n");
+		scanf(" %[^\n]", echoString);
+		echoStringLen = strlen(echoString);
 
-	if ((echoStringLen = strlen(echoString)) > ECHOMAX) {
-		errorhandler("echo word too long");
+		if (echoBuffer[0] != '=') {
+			if (echoStringLen > ECHOMAX) {
+				errorhandler("echo word too long");
+			}
+
+			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
+				errorhandler("sento() sent different number of bytes than expected");
+			}
+
+			// receiving result from server
+			fromSize = sizeof(fromAddr);
+			respStringLen = recvfrom(client_socket, echoBuffer, ECHOMAX, 0, (struct sockaddr*)&fromAddr, &fromSize);
+
+			if (echoServerAddr.sin_addr.s_addr != fromAddr.sin_addr.s_addr) {
+				fprintf(stderr, "Error: received a packet from unknown source.\n");
+				return EXIT_FAILURE;
+			}
+		} else {
+			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
+				errorhandler("echo word too long");
+			}
+
+			// closing socket
+			printf("Closing client");
+			closesocket(client_socket);
+			clearwinsock();
+			return EXIT_SUCCESS;
+		}
 	}
-
-	if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
-		errorhandler("sento() sent different number of bytes than expected");
-	}
-
-	// receiving result from server
-	fromSize = sizeof(fromAddr);
-	respStringLen = recvfrom(client_socket, echoBuffer, ECHOMAX, 0, (struct sockaddr*)&fromAddr, &fromSize);
-
-	if (echoServerAddr.sin_addr.s_addr != fromAddr.sin_addr.s_addr) {
-		fprintf(stderr, "Error: received a packet from unknown source.\n");
-		return EXIT_FAILURE;
-	}
-
-	// TODO find server's canonical name and info
-
-	// closing socket
-	closesocket(client_socket);
-	clearwinsock();
-
-	return EXIT_SUCCESS;
 }
