@@ -56,15 +56,14 @@ int main(void) {
 	int server_socket;
 	struct sockaddr_in echoServerAddr;
 	struct sockaddr_in echoClientAddr;
+	struct hostent* client;
 	int clientAddrLen = 0;
 	char echoBuffer[ECHOMAX];
-	char sign[0];
 	char* exitMsg = "Closing connection";
+	char* client_name;
 	int recvMsgSize = 0;
-	int exitMsgLen = 0;
 	int bufferLen = 0;
 	int result = 0;
-	int a = 0, b = 0;
 
 	// server's socket
 	if ((server_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -87,19 +86,22 @@ int main(void) {
 	// receiving a query from client
 	while(1) {
 		printf("Waiting for a client to connect...\n");
-		// TODO finding client's canonical name
 
 		do {
 			clientAddrLen = sizeof(echoClientAddr);
 			memset(echoBuffer, 0, sizeof(echoBuffer));
 			recvMsgSize = recvfrom(server_socket, echoBuffer, ECHOMAX, 0, (struct sockaddr*)&echoClientAddr, &clientAddrLen);
 
+			// finding client's canonical name
+			client = gethostbyaddr((char*)&echoClientAddr.sin_addr, 4, AF_INET);
+			client_name = client->h_name;
+
 			// handling math operation
 			result = calculator(echoBuffer);
 
 			if (echoBuffer[0] != EQUALS) {
 				// printing data received
-				printf("Data received from client: %s\n", echoBuffer);
+				printf("Query '%s' from client %s, ip %s\n", echoBuffer, client_name, inet_ntoa(echoClientAddr.sin_addr));
 
 				// sending result back to client
 				memset(echoBuffer, 0, sizeof(echoBuffer));
@@ -110,8 +112,6 @@ int main(void) {
 				if (sendto(server_socket, echoBuffer, bufferLen, 0, (struct sockaddr*)&echoClientAddr, &clientAddrLen) != bufferLen) {
 					errorhandler("sendto() sent different number of bytes than expected");
 				}
-			} else {
-				echoBuffer[0] = EQUALS;
 			}
 		} while (echoBuffer[0] != EQUALS);
 	}

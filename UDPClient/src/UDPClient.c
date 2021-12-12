@@ -113,7 +113,7 @@ int main(void) {
 				return EXIT_FAILURE;
 			}
 
-			printf("Result received from %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
+			printf("Result received from server %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
 		} else {
 			// FIXME it recognize late esc value
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
