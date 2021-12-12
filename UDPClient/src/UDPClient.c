@@ -12,6 +12,15 @@
 #include <stdlib.h>
 #include "utils.h"
 
+void checkingServerInfo(char name[], int port) {
+	if (strcmp(name, DEFAULT_NAME) != 0) {
+		strcpy(name, DEFAULT_NAME);
+	}
+	if (port != DEFAULT_PORT) {
+		port = DEFAULT_PORT;
+	}
+}
+
 int main(void) {
 	// output stream
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -48,10 +57,12 @@ int main(void) {
 
 	// server's address and port from input
 	// FIXME doesn't recognise name:port format
-	// TODO starting with standard values
 	printf("Insert server's name and port like this: localhost 48000\n");
 	scanf(" %[^\n]", echoBuffer);
 	sscanf(echoBuffer, "%s %d", server_name, &server_port);
+
+	// checking input with default values
+	checkingServerInfo(server_name, server_port);
 
 	// server's address resolution
 	server = gethostbyname(server_name);
