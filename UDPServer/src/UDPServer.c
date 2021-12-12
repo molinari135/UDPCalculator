@@ -2,7 +2,7 @@
  ============================================================================
  Name        : UDPServer.c
  Author      : Ester Molinari
- Version     : 1.2
+ Version     : 1.3
  Copyright   : Your copyright notice
  Description : A simple UDP calculator in C (server)
  ============================================================================
@@ -14,7 +14,8 @@
 
 float calculator(char query[]) {
 	char sign[0];
-	int res = 0, a = 0, b = 0;
+	float res = 0;
+	int a = 0, b = 0;
 
 	sscanf(query, "%s %d %d", sign, &a, &b);
 
@@ -63,7 +64,7 @@ int main(void) {
 	char* client_name;
 	int recvMsgSize = 0;
 	int bufferLen = 0;
-	int result = 0;
+	float result = 0;
 
 	// server's socket
 	if ((server_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -104,9 +105,14 @@ int main(void) {
 				printf("Query '%s' from client %s, ip %s\n", echoBuffer, client_name, inet_ntoa(echoClientAddr.sin_addr));
 
 				// sending result back to client
-				memset(echoBuffer, 0, sizeof(echoBuffer));
-				itoa(result, echoBuffer, 10);
-				printf("Result: %s", echoBuffer);
+				if (echoBuffer[0] == '/') {
+					memset(echoBuffer, 0, sizeof(echoBuffer));
+					sprintf(echoBuffer, "%.2f", result);
+				} else {
+					sprintf(echoBuffer, "%.0f", result);
+				}
+
+				printf("Result: %s\n", echoBuffer);
 
 				bufferLen = strlen(echoBuffer);
 				if (sendto(server_socket, echoBuffer, bufferLen, 0, (struct sockaddr*)&echoClientAddr, &clientAddrLen) != bufferLen) {
