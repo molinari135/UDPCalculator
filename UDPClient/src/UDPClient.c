@@ -12,15 +12,7 @@
 #include <stdlib.h>
 #include "utils.h"
 
-void checkingServerInfo(char name[], int port) {
-	// checking loopback canonical name
-	if (strcmp(name, DEFAULT_NAME) != 0) {
-		strcpy(name, DEFAULT_NAME);
-	}
-	if (port != DEFAULT_PORT) {
-		port = DEFAULT_PORT;
-	}
-}
+void checkingServerInfo(char name[], int port);
 
 int main(int argc, char *argv[]) {
 	// output stream
@@ -36,10 +28,10 @@ int main(int argc, char *argv[]) {
 	}
 #endif
 
-	int client_socket;
-	int echoStringLen;
-	int respStringLen;
-	int fromSize;
+	int client_socket = 0;
+	int echoStringLen = 0;
+	int respStringLen = 0;
+	int fromSize = 0;
 	int server_port = 0;
 	int a = 0, b = 0;
 	struct sockaddr_in echoServerAddr;
@@ -124,7 +116,7 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 			}
 
-			printf("Result received from server %s, ip %s: %d %s %d = %s\n", server_name, inet_ntoa(*serverAddr), a, sign, b, echoBuffer);
+			printf("Result received from server %s, ip %s: %s\n", server_name, inet_ntoa(*serverAddr), echoBuffer);
 		} else {
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
 				errorhandler("echo word too long");
@@ -136,5 +128,15 @@ int main(int argc, char *argv[]) {
 			clearwinsock();
 			return EXIT_SUCCESS;
 		}
+	}
+}
+
+void checkingServerInfo(char name[], int port) {
+	// checking loopback canonical name
+	if (strcmp(name, DEFAULT_NAME) != 0) {
+		strcpy(name, DEFAULT_NAME);
+	}
+	if (port != DEFAULT_PORT) {
+		port = DEFAULT_PORT;
 	}
 }
