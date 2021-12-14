@@ -2,7 +2,7 @@
  * utils.h
  *
  *  Created on: 11 dic 2021
- *      Author: Ester Molinari
+ *      Author: Ester Molinari, Tommaso Perniola
  */
 
 #ifndef UTILS_H_
