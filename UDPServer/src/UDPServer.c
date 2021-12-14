@@ -58,7 +58,6 @@ int main(void) {
 
 	// receiving a query from client
 	while(1) {
-		printf("Waiting for a client to connect...\n");
 
 		clientAddrLen = sizeof(echoClientAddr);
 		memset(echoBuffer, 0, sizeof(echoBuffer));
