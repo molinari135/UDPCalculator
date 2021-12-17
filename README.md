@@ -1,5 +1,12 @@
 # UDPCalculator
-A simple UDP calculator in C
+A simple UDP calculator in C (Read [Notes](#notes) for client's <b>input parameters</b>)
+
+## Screenshots
+### Client
+![image](https://user-images.githubusercontent.com/64893048/146584267-da395377-75c7-4e08-882e-4abf155283c2.png)
+
+### Server
+![image](https://user-images.githubusercontent.com/64893048/146584142-8ae0f477-f53d-4d4c-985c-c4a09a03851c.png)
 
 ## Description
 UDP client/server application where the server is a remote calculator that answers to client's queries.
@@ -23,3 +30,7 @@ UDP client/server application where the server is a remote calculator that answe
 - Single line input insertion (`+ 23 45[enter]`, not `+[enter]23[enter]45[enter]`)
 - Client and server should be able to start also with default values
 - Queries are independant (no cumulative results)
+
+## Notes
+- <b>Server's name</b>: localhost
+- <b>Server's port</b>: 45000
