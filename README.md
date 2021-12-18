@@ -3,10 +3,10 @@ A simple UDP calculator in C (Read [Notes](#notes) for client's <b>input paramet
 
 ## Screenshots
 ### Client
-![image](https://user-images.githubusercontent.com/64893048/146584267-da395377-75c7-4e08-882e-4abf155283c2.png)
+![image](https://user-images.githubusercontent.com/64893048/146655948-61558b62-294e-4fd8-badb-b82b87fc0bf0.png)
 
 ### Server
-![image](https://user-images.githubusercontent.com/64893048/146584142-8ae0f477-f53d-4d4c-985c-c4a09a03851c.png)
+![image](https://user-images.githubusercontent.com/64893048/146655957-4a7d0dda-bfca-47d9-8ad4-221800f258dd.png)
 
 ## Description
 UDP client/server application where the server is a remote calculator that answers to client's queries.
@@ -34,3 +34,5 @@ UDP client/server application where the server is a remote calculator that answe
 ## Notes
 - <b>Server's name</b>: localhost
 - <b>Server's port</b>: 45000
+- Client will connect with these default values if wrong input
+- Client also accept args values (insert by IDE)
