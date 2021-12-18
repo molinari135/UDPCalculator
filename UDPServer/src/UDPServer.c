@@ -56,6 +56,8 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
+	printf("Waiting for a client...\n\n");
+
 	// receiving a query from client
 	while(1) {
 
@@ -113,7 +115,7 @@ void calculator(char query[], char resp[]) {
 		sprintf(resp, "%d %c %d = %.0f", a, query[0], b, res);
 		break;
 	case '=':
-		printf("\nClosing connection\n\n");
+		printf("Closing connection\n\n");
 		sprintf(resp, "%s", "Connection closed");
 		break;
 	}

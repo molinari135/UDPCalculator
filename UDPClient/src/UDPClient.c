@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 		strcpy(server_ip, inet_ntoa(*serverAddr));
 	}
 
-	printf("Name: %s, Address: %s\n", server_name, server_ip);
+	printf("Connection established with %s, address: %s\n\n", server_name, server_ip);
 
 	// setting server's address and port
 	memset(&echoServerAddr, 0, sizeof(echoServerAddr));
@@ -89,6 +89,13 @@ int main(int argc, char *argv[]) {
 	echoServerAddr.sin_addr.s_addr = inet_addr(DEFAULT_IP);
 
 	// sending a message to server
+	printf("Welcome to UDPCalculator!"
+			"\n There's a list of queries example:"
+			"\n Addition:\t\t+ 23 45"
+			"\n Subtraction:\t\t- 23 45"
+			"\n Division:\t\t/ 23 45"
+			"\n Multiplication:\t* 23 45"
+			"\n Close calculator:\t=\n\n");
 	while(1) {
 		memset(echoString, 0, sizeof(echoString));
 		printf("Insert a math query (+ 23 45):\n");
@@ -116,16 +123,17 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 			}
 
-			printf("Result received from server %s, ip %s: %s\n", server_name, inet_ntoa(*serverAddr), echoBuffer);
+			printf("Result received from server %s, ip %s: %s\n\n", server_name, inet_ntoa(*serverAddr), echoBuffer);
 		} else {
 			if (sendto(client_socket, echoString, echoStringLen, 0, (struct sockaddr*)&echoServerAddr, sizeof(echoServerAddr)) != echoStringLen) {
 				errorhandler("echo word too long");
 			}
 
 			// closing socket
-			printf("Closing client");
+			printf("Closing client\n");
 			closesocket(client_socket);
 			clearwinsock();
+			system("pause");
 			return EXIT_SUCCESS;
 		}
 	}
